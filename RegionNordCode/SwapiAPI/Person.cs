@@ -31,7 +31,7 @@ namespace SwapiAPI
                    "Eye Color: " + this.eye_color + "\n" +
                    "Birth Year: " + this.birth_year + "\n" +
                    "Gender: " + this.gender + "\n" +
-                   "Homeworld: " + this.homeworld + "\n" ;
+                   "Homeworld: " + this.homeworld + "\n";
         }
     }
 

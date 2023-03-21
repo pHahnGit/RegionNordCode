@@ -2,7 +2,7 @@
 
 public class Palindrome
 {
-    static void Main(string[] args)
+    static void Main()
     {
         string userInput;
         bool running = true;
@@ -14,22 +14,22 @@ public class Palindrome
         {
             Console.WriteLine("Enter a word or integer to be checked:");
 
-            userInput= Console.ReadLine();
-            
+            userInput = Console.ReadLine();
+
             //If the word exit is used, stop the program
-            if(userInput.ToLower() == "exit")
+            if (userInput.ToLower() == "exit")
             {
                 Console.WriteLine("Bye!");
-                running= false;
+                running = false;
             }
             else if (userInput != null)
             {
                 try
                 {
-                //Do the check and write the result
-                Console.WriteLine("is '" + userInput + "' a palindrome: " + PalindromeCheck(userInput).ToString());
+                    //Do the check and write the result
+                    Console.WriteLine("is '" + userInput + "' a palindrome: " + PalindromeCheck(userInput).ToString());
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine("Something went wrong");
                     //Should do some logging here
@@ -42,12 +42,19 @@ public class Palindrome
     private static bool PalindromeCheck(int input)
     {
         // The below method can check string sequences as well.
-        // But i seem to remember that there is a mathematical quick way of checking integers
+        // But I vaguely remember that there is a mathematical way of checking integers
         return PalindromeCheck(input.ToString());
     }
     private static bool PalindromeCheck(string input)
     {
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            throw new Exception("Please provide a string");
+        }
+
         bool result = false;
+
         //TODO remove special characters
         //Trim all the whitespaces and make it lower
         string trim = Regex.Replace(input, " ", string.Empty).ToLower();
@@ -58,9 +65,9 @@ public class Palindrome
         for (int i = 0; i < length; i++)
         {
             //Reverse checking the indexes, if one does not match, we stop and return false
-            if(trimCharArray[i] == trimCharArray[length - (i+1)])
+            if (trimCharArray[i] == trimCharArray[length - (i + 1)])
             {
-                result= true;
+                result = true;
             }
             else
             {
@@ -68,5 +75,5 @@ public class Palindrome
             }
         }
         return result;
-    } 
+    }
 }

@@ -6,15 +6,13 @@ using System;
 namespace SwapiAPI;
 public class Lookup
 {
-
-    static void Main(string[] args)
+    private static RestClient _client;
+    private static MemoryCache _cache;
+    static void Main()
     {
-        //Adding a client for API calls
-        RestClient client = new RestClient("https://swapi.dev/api/");
+        _client = new RestClient("https://swapi.dev/api/");
+        _cache = new MemoryCache("SWAPI");
 
-        // Cache 
-        MemoryCache cache = new MemoryCache("SWAPI");
-        
         bool running = true;
         Console.WriteLine("Welcome to the SWAPI API people lookup ");
         Console.WriteLine("Type 'exit' to stop)");
@@ -35,19 +33,19 @@ public class Lookup
             {
                 try
                 {
-                    Console.WriteLine(GetPerson(userInput, client, cache));
+                    Console.WriteLine(GetPerson(userInput));
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Something went wrong");
                     //Should do some logging here
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Exception: " + ex.Message);
                 }
             }
         }
     }
 
-    public static string GetPerson(string id, RestClient client, MemoryCache cache)
+    private static string GetPerson(string id)
     {
         // Check if the id is a integer
         if (!Int32.TryParse(id, out var personId))
@@ -57,8 +55,8 @@ public class Lookup
 
         string json = null;
 
-        //TODO: check the cache for the id
-        var item = cache.GetCacheItem(id);
+        // Check cache for id
+        var item = _cache.GetCacheItem(id);
         if (item != null)
         {
             return item.Value.ToString();
@@ -68,14 +66,22 @@ public class Lookup
             //TODO: Maybe make this parameterized to combat SQL injection (Or do we trust SWAPI to handle that? )
             var request = new RestRequest("people/" + id);
 
-            var response = client.Get(request);
-            json = response.Content;
+            var response = _client.Get(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                json = response.Content;
 
-            Person person = JsonSerializer.Deserialize<Person>(json);
+                Person person = JsonSerializer.Deserialize<Person>(json);
 
-            cache.Add(new CacheItem(id, person), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0) });
+                //If it had been an API controller I might have considered caching the URL and done the check if it has been called, before moving through logic (Or used Redis for caching incoming request)
+                _cache.Add(new CacheItem(id, person), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0) });
 
-            return person.ToString();
+                return person.ToString();
+            }
+            else
+            {
+                throw new Exception(response.StatusCode.ToString());
+            }
         }
 
     }
