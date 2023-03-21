@@ -61,7 +61,7 @@ public class Lookup
         var item = cache.GetCacheItem(id);
         if (item != null)
         {
-            json = item.Value.ToString();
+            return item.Value.ToString();
         }
         else
         {
@@ -71,11 +71,12 @@ public class Lookup
             var response = client.Get(request);
             json = response.Content;
 
-            cache.Add(new CacheItem(id, json), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0) });
+            Person person = JsonSerializer.Deserialize<Person>(json);
+
+            cache.Add(new CacheItem(id, person), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0) });
+
+            return person.ToString();
         }
 
-        Person person = JsonSerializer.Deserialize<Person>(json);
-
-        return person.ToString();
     }
 }
