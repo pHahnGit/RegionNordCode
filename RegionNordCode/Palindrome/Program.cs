@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using static System.Net.Mime.MediaTypeNames;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 public class Palindrome
 {
