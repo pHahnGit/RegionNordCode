@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Palindrome", "Palindrome\Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapiAPI", "SwapiAPI\SwapiAPI.csproj", "{1AE8EE99-A19C-46EE-9D86-AA14177BC9C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadingSemaphoreSlim", "ThreadingSemaphoreSlim\ThreadingSemaphoreSlim.csproj", "{548181D5-8B45-42B7-AB93-9C5799D6C8AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1AE8EE99-A19C-46EE-9D86-AA14177BC9C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AE8EE99-A19C-46EE-9D86-AA14177BC9C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AE8EE99-A19C-46EE-9D86-AA14177BC9C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548181D5-8B45-42B7-AB93-9C5799D6C8AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548181D5-8B45-42B7-AB93-9C5799D6C8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548181D5-8B45-42B7-AB93-9C5799D6C8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548181D5-8B45-42B7-AB93-9C5799D6C8AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
