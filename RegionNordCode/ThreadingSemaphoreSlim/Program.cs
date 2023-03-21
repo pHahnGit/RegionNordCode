@@ -2,6 +2,7 @@
 using SwapiAPI;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ class Program
 
     public static void Main()
     {
+        //Await all task that is created by CreateCalls()
         Task.WaitAll(CreateCalls().ToArray());
     }
 
@@ -23,15 +25,19 @@ class Program
 
         foreach (var item in list)
         {
+            //Collectiong all the task in the array for the main thread to await
             yield return GetPerson(item);
         }
     }
 
     public async static Task GetPerson(int id)
     {
+        //Tell the "gate" that it locks a thread untill this is done
         await semaphore.WaitAsync();
 
+        Console.WriteLine("########################################");
         Console.WriteLine("Starting the request of person id: " + id);
+        Console.WriteLine("########################################");
 
         var request = new RestRequest("https://swapi.dev/api/people/" + id);
         var response = await restClient.GetAsync(request);
@@ -41,9 +47,10 @@ class Program
         //Random sleep of the thread
         Thread.Sleep(rnd.Next(1000, 5000));
 
-        Console.WriteLine("Result for person id: " + id);
-        Console.WriteLine(person.ToString());
+        Console.WriteLine("     Result for person id: " + id);
+        Console.WriteLine("    " + person.ToString());
 
+        //Releases the thread for others to use
         semaphore.Release();
 
     }
