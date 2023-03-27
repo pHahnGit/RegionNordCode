@@ -12,28 +12,76 @@ public class Lookup
     {
         _client = new RestClient("https://swapi.dev/api/");
         _cache = new MemoryCache("SWAPI");
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
+        Console.WriteLine("Welcome to the SWAPI API  lookup ");
+        Console.WriteLine();
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
+
+        MainMenu();
+    }
+
+    static void MainMenu()
+    {
+        Console.WriteLine("Press 1 if want to look up Star Wars Characters by ID");
+        Console.WriteLine("Press 2 if you want to look up Star Wars Films by ID");
+        Console.WriteLine("Press 3 to Exit");
+
+        var choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                PeopleMenu();
+                break;
+            case "2":
+                FilmMenu();
+                break;
+            case "3":
+                Console.WriteLine("Thank you for visiting, Goodbye!");
+                break;
+            default:
+                Console.WriteLine("That is not a valid input");
+                MainMenu();
+                break;
+        }
+
+    }
+
+    private static void FilmMenu()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void PeopleMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
+        Console.WriteLine("Below is a list of actions that can be performed!");
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine("type the ID of the Star Wiars Character you want to look up");
+        Console.WriteLine("Type '0' to return to main menu.");
 
         bool running = true;
-        Console.WriteLine("Welcome to the SWAPI API people lookup ");
-        Console.WriteLine("Type 'exit' to stop)");
 
         while (running)
         {
-            Console.WriteLine("Enter the id on the starwars character you want to lookup:");
+            Console.WriteLine("Enter the ID of the Star Wars character you want to lookup:");
 
             var userInput = Console.ReadLine();
 
             //If the word exit is used, stop the program
-            if (userInput.ToLower() == "exit")
+            if (userInput.ToLower() == "0")
             {
-                Console.WriteLine("Bye!");
                 running = false;
+                Console.Clear();
+                MainMenu();
             }
             else if (userInput != null)
             {
                 try
                 {
-                    Console.WriteLine(GetPerson(userInput));
+                    Console.WriteLine(Person.GetPersonFullLoad(_client, _cache, userInput).ToString());
+
                 }
                 catch (Exception ex)
                 {
@@ -43,30 +91,9 @@ public class Lookup
                 }
             }
         }
-    }
-
-    private static string GetPerson(string id)
-    {
-        // Check if the id is a integer
-        if (!Int32.TryParse(id, out var personId))
-        {
-            throw new Exception("The provided ID is not a number");
-        }
-
-        string json = null;
-
-        // Check cache for id
-        var item = _cache.GetCacheItem("people/" + id);
-        if (item != null)
-        {
-            return item.Value.ToString();
-        }
-        else
-        {
-            var person = Person.GetPersonFullLoad(_client, _cache, id);
-            
-            return person.ToString();
-        }
 
     }
+
+
+
 }

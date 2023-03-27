@@ -42,11 +42,21 @@ namespace SwapiAPI
                    "Homeworld: " + this.homeworld + "\n";
         }
 
+
         public static Person GetPersonFullLoad(RestClient client, MemoryCache cache, string id)
         {
-            //TODO: Maybe make this parameterized to combat SQL injection (Or do we trust SWAPI to handle that? )
-            var request = new RestRequest("people/" + id);
+            if (!Int32.TryParse(id, out var personId))
+            {
+                throw new Exception("The provided ID is not a number");
+            }
 
+            Person item = cache.Get("people/" + id) as Person;
+            if (item != null)
+            {
+                return item;
+            }
+
+            var request = new RestRequest("people/" + id);
             var response = client.Get(request);
 
             if (response.StatusCode.ToString() == "OK")
@@ -55,7 +65,6 @@ namespace SwapiAPI
 
                 Person person = JsonSerializer.Deserialize<Person>(json);
                 person.GetListItems(client, cache);
-                //If it had been an API controller I might have considered caching the URL and done the check if it has been called, before moving through logic (Or used Redis for caching incoming request)
                 cache.Add(new CacheItem("people/" + id, person), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0), });
 
                 return person;
@@ -78,7 +87,7 @@ namespace SwapiAPI
             {
                 string requestParameters = url.Replace(client.Options.BaseUrl.ToString(), "");
                 Film item = cache.Get(requestParameters) as Film;
-                if (item != null && item is Film)
+                if (item != null)
                 {
                     result.Add(item);
                 }
