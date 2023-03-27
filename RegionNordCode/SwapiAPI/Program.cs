@@ -56,32 +56,16 @@ public class Lookup
         string json = null;
 
         // Check cache for id
-        var item = _cache.GetCacheItem(id);
+        var item = _cache.GetCacheItem("people/" + id);
         if (item != null)
         {
             return item.Value.ToString();
         }
         else
         {
-            //TODO: Maybe make this parameterized to combat SQL injection (Or do we trust SWAPI to handle that? )
-            var request = new RestRequest("people/" + id);
-
-            var response = _client.Get(request);
-            if (response.StatusCode.ToString() == "OK")
-            {
-                json = response.Content;
-
-                Person person = JsonSerializer.Deserialize<Person>(json);
-
-                //If it had been an API controller I might have considered caching the URL and done the check if it has been called, before moving through logic (Or used Redis for caching incoming request)
-                _cache.Add(new CacheItem(id, person), new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(120.0) });
-
-                return person.ToString();
-            }
-            else
-            {
-                throw new Exception(response.StatusCode.ToString());
-            }
+            var person = Person.GetPersonFullLoad(_client, _cache, id);
+            
+            return person.ToString();
         }
 
     }
