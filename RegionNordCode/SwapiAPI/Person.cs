@@ -9,7 +9,6 @@ namespace SwapiAPI
 {
     public class Person
     {
-        public bool cacheStateFullObject { get; set; }
         public string name { get; set; }
         public string height { get; set; }
         public string mass { get; set; }
