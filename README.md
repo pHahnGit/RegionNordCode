@@ -6,7 +6,7 @@ The StarWars API challenge was particulary interesting, as I came across some co
 
 Hence I did some more work on it to hone my skills.
 
-##TODO:
+### TO DO:
 - ~~Caching of API request as keys instead of ID's~~
 - ~~Turn list of associated URL's into list of objects~~
 - Generate a full objects and shallow for the associated objects, in order to not work through the entire associations of the objects when doing HTTP request.
