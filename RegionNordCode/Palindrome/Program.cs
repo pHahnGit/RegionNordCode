@@ -41,7 +41,7 @@ public class Palindrome
 
     private static bool PalindromeCheck(int input)
     {
-        // The below method can check string sequences as well.
+        // The below method can check integer sequences as well.
         // But I vaguely remember that there is a mathematical way of checking integers
         return PalindromeCheck(input.ToString());
     }
@@ -55,10 +55,9 @@ public class Palindrome
 
         bool result = false;
 
-        //TODO remove special characters
-        //Trim all the whitespaces and make it lower
-        string trim = Regex.Replace(input, " ", string.Empty).ToLower();
-
+        //Match all the characters 0-9, a-z, A-Z, anything else becomes "" (including whitespaces)
+        string trim = Regex.Replace(input, @"[^0-9a-zA-Z]+", "");
+  
         char[] trimCharArray = trim.ToCharArray();
         int length = trimCharArray.Length;
 
