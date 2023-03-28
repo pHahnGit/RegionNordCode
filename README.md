@@ -4,7 +4,7 @@ Code Challenge for first interview Region Nord.
 This was a quick code challenge done for a job interview.
 The StarWars API challenge was particulary interesting, as I came across some considerations regarding cacheing and how to handle the list objects, which I did not have time for.
 
-Hence I did some more work on it to hone my skills.
+Hence I did some more work on it to hone my skills. Feel free to comment or discuss if you have a clever way of dealing with nested json objects that has to be accessed by HTTP request.
 
 ### TO DO:
 - ~~Caching of API request as keys instead of ID's~~
